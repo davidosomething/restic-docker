@@ -25,6 +25,8 @@ checkRepoStatus() {
   repoInitialized || initializeRepo
 }
 
+restic version
+
 log "[INFO] Starting container ..."
 log "[INFO] Backup cron schedule is set to: ${BACKUP_CRON}"
 echo "${BACKUP_CRON} /root/backup.sh >> $LOG 2>&1" > /var/spool/cron/crontabs/root
