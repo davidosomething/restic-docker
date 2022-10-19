@@ -1,10 +1,12 @@
 #!/bin/bash
+
 set -e
 
-logFile="/var/log/restic/prune/$(date +"%Y-%m-%d-%H-%M-%S").log"
+log_date=$(date +"%Y-%m-%d-%H-%M-%S")
+log_file="/var/log/restic/prune/${log_date}.log"
 
 log() {
-    echo "[$(date +"%Y-%m-%d %H:%M:%S")]$1" | tee -a "$logFile"
+    echo "[$(date +"%Y-%m-%d %H:%M:%S")]$1" | tee -a "$log_file"
 }
 
 showTime() {
@@ -36,16 +38,24 @@ showTime() {
 
 start=$(date +%s)
 log "[INFO] Starting prune"
-log "[INFO] Log filename: ${logFile}"
+log "[INFO] Log filename: ${log_file}"
 
 log "[INFO] Starting prune process"
-restic prune | tee -a "$logFile"
+restic prune | tee -a "$log_file"
 rc=$?
 if [[ $rc == 0 ]]; then
     log "[INFO] Prune succeeded"
+    [ -n "$GOTIFY" ] && curl "$GOTIFY" \
+      -F "title=restic prune complete" \
+      -F "message=[${log_date}] returned ${rc} on ${end}" \
+      -F "priority=5"
 else
     log "[ERROR] Prune failed with status $rc"
     restic unlock
+    [ -n "$GOTIFY" ] && curl "$GOTIFY" \
+      -F "title=restic prune failed" \
+      -F "message=[${log_date}] returned ${rc} on ${end}" \
+      -F "priority=5"
 fi
 
 end=$(date +%s)
