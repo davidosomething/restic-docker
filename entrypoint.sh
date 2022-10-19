@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+log_date=$(date +"%Y-%m-%d-%H-%M-%S")
+
 log() {
   echo "[$(date +"%Y-%m-%d %H:%M:%S")]$1" | tee -a "$LOG"
 }
@@ -47,6 +49,11 @@ crond && log "[INFO] Cron service started successfully"
 
 # If the repo has never been initialized, init the repo
 checkRepoStatus
+
+[ -n "$GOTIFY" ] && curl "$GOTIFY" \
+  -F "title=restic container started" \
+  -F "message=[${log_date}]" \
+  -F "priority=5"
 
 log "[INFO] Container started"
 tail -fn0 "$LOG"
