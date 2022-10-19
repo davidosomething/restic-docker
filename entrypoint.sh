@@ -52,7 +52,7 @@ checkRepoStatus
 
 [ -n "$GOTIFY" ] && curl "$GOTIFY" \
   -F "title=restic container started" \
-  -F "message=[${log_date}]" \
+  -F "message=[${log_date}] $(restic version)" \
   -F "priority=5"
 
 log "[INFO] Container started"
