@@ -1,8 +1,5 @@
 export start
 
-log_date=$(date +"%Y-%m-%d-%H-%M-%S")
-export log_date
-
 __humantime() {
   num=$1
   min=0

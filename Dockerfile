@@ -9,10 +9,6 @@ WORKDIR /root
 COPY util.bash entrypoint.bash backup.bash prune.bash forget.bash ./
 ENV PATH="./:${PATH}"
 RUN chmod a+x ./*.bash
-RUN mkdir -p /var/spool/cron/crontabs \
-             /var/log/restic/backup \
-             /var/log/restic/prune \
-             /var/log/restic/forget \
-             /data
+RUN mkdir -p /var/spool/cron/crontabs /data
 ENV TZ=America/New_York
 ENTRYPOINT ["entrypoint.bash"]
