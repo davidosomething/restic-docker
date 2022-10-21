@@ -33,7 +33,8 @@ __log() {
 __notify() {
   [ -n "$GOTIFY" ] && curl "$GOTIFY" \
     --silent \
+    --output /dev/null \
     --form "title=${1}" \
-    --form "message=[$(date +"%Y-%m-%d-%H-%M-%S")] ${2}" \
-    --form "priority=5"
+    --form "message=[$(date +"%Y-%m-%d-%H-%M-%S")] ${2}"
+  return 0
 }
