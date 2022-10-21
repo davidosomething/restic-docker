@@ -6,7 +6,7 @@ source ./util.bash
 
 __log "[INFO] Starting container ..."
 __log "[INFO] Backup cron schedule is set to: ${BACKUP_CRON}"
-echo "${BACKUP_CRON} /root/backup.bash" > /var/spool/cron/crontabs/root
+echo "${BACKUP_CRON} /root/backup.bash >>/var/log/cron.log 2>&1" > /var/spool/cron/crontabs/root
 
 if [ -n "${FORGET_CRON}" ]; then
   __log "[INFO] Forget cron schedule is set to: ${FORGET_CRON}"
@@ -34,3 +34,7 @@ restic snapshots || {
 }
 __log "[INFO] Container started"
 __notify "container started" "$(restic version)"
+
+# run Dockerfile CMD, which should run indefinitely (container may restart on
+# exit)
+exec "$@"

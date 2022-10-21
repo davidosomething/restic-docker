@@ -9,6 +9,8 @@ WORKDIR /root
 COPY util.bash entrypoint.bash backup.bash prune.bash forget.bash ./
 ENV PATH="./:${PATH}"
 RUN chmod a+x ./*.bash
-RUN mkdir -p /var/spool/cron/crontabs /data
+RUN mkdir -p /var/log /var/spool/cron/crontabs /data
+RUN touch /var/log/cron.log
 ENV TZ=America/New_York
 ENTRYPOINT ["entrypoint.bash"]
+CMD ["tail", "-fn0", "/var/log/cron.log"]
