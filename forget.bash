@@ -2,11 +2,13 @@
 
 set -e
 
-start=$(date +%s)
-log "[INFO] Starting forget"
-log "[INFO] RESTIC_FORGET_ARGS: ${RESTIC_FORGET_ARGS}"
+source ./util.bash
+
+__log "[INFO] Starting forget"
+__log "[INFO] RESTIC_FORGET_ARGS: ${RESTIC_FORGET_ARGS}"
 
 if [ -n "${RESTIC_FORGET_ARGS}" ]; then
+  start=$(date +%s)
   restic forget "${RESTIC_FORGET_ARGS}"
   rc=$?
   end=$(date +%s)

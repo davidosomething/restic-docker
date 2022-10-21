@@ -1,13 +1,10 @@
 #!/bin/bash
 
 set -e
-# credit: some of the code for this script inspired by
-# https://github.com/lobaro/restic-backup-docker
 
 source ./util.bash
 
 __log "[INFO] Starting backup"
-
 [ -n "$RESTIC_BACKUP_ARGS" ] && __log "[INFO] RESTIC_BACKUP_ARGS: ${RESTIC_BACKUP_ARGS}"
 
 start=$(date +%s)

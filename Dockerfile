@@ -6,7 +6,7 @@ ENV RESTIC_TAG=latest
 # We're just using pre-built restic now
 RUN apk add --update --no-cache bash ca-certificates curl restic tzdata
 WORKDIR /root
-COPY entrypoint.bash backup.bash prune.bash forget.bash ./
+COPY util.bash entrypoint.bash backup.bash prune.bash forget.bash ./
 ENV PATH="./:${PATH}"
 RUN chmod a+x ./*.bash
 RUN mkdir -p /var/spool/cron/crontabs \
