@@ -12,16 +12,12 @@ repoInitialized() {
 }
 
 initializeRepo() {
-  restic init || {
+  res=$(restic init 2>&1) || {
     __log "[ERROR] Failed to initialize repo"
+    __notify "failed to init repo" "$res"
     return 1
   }
   __log "[INFO] Repo initialized"
-}
-
-checkRepoStatus() {
-  __log "[INFO] Checking restic repository status ..."
-  repoInitialized || initializeRepo
 }
 
 restic version
@@ -44,8 +40,8 @@ __log "[INFO] Timezone is set to: ${TZ}"
 __log "[INFO] Starting cron service"
 crond && __log "[INFO] Cron service started successfully"
 
-# If the repo has never been initialized, init the repo
-checkRepoStatus
+__log "[INFO] Checking restic repository status ..."
+repoInitialized || initializeRepo
 
 __log "[INFO] Container started"
 __notify "container started" "$(restic version)"

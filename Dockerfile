@@ -1,6 +1,6 @@
 # Don't need to use golang image since no more compiling
 FROM alpine:3.16
-ENV LOG=/var/log/restic/restic.log
+# Every hour by default
 ENV BACKUP_CRON="0 1 * * *"
 ENV RESTIC_TAG=latest
 # We're just using pre-built restic now
