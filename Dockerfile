@@ -15,5 +15,5 @@ COPY --chmod=0755 util.bash entrypoint.bash backup.bash prune.bash forget.bash .
 RUN mkdir -p /var/log /var/spool/cron/crontabs /data
 RUN touch /var/log/cron.log
 
-ENTRYPOINT ["entrypoint.bash"]
+ENTRYPOINT ["/bin/bash", "entrypoint.bash"]
 CMD ["tail", "-fn0", "/var/log/cron.log"]

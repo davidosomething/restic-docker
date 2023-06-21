@@ -6,16 +6,16 @@ source ./util.bash
 
 __log "[INFO] Starting container ..."
 __log "[INFO] Backup cron schedule is set to: ${BACKUP_CRON}"
-echo "${BACKUP_CRON} /root/backup.bash >>/var/log/cron.log 2>&1" > /var/spool/cron/crontabs/root
+echo "${BACKUP_CRON} /root/backup.bash >>/var/log/cron.log 2>&1" >/var/spool/cron/crontabs/root
 
 if [ -n "${FORGET_CRON}" ]; then
   __log "[INFO] Forget cron schedule is set to: ${FORGET_CRON}"
-  echo "${FORGET_CRON} /root/forget.bash" >> /var/spool/cron/crontabs/root
+  echo "${FORGET_CRON} /root/forget.bash" >>/var/spool/cron/crontabs/root
 fi
 
 if [ -n "${PRUNE_CRON}" ]; then
   __log "[INFO] Prune cron schedule is set to: ${PRUNE_CRON}"
-  echo "${PRUNE_CRON} /root/prune.bash" >> /var/spool/cron/crontabs/root
+  echo "${PRUNE_CRON} /root/prune.bash" >>/var/spool/cron/crontabs/root
 fi
 
 __log "[INFO] Timezone is set to: ${TZ}"
