@@ -5,23 +5,23 @@ __humantime() {
   min=0
   hour=0
   day=0
-  if ((num>59)); then
-    ((sec=num%60))
-    ((num=num/60))
-    if ((num>59)); then
-      ((min=num%60))
-      ((num=num/60))
-      if ((num>23)); then
-        ((hour=num%24))
-        ((day=num/24))
+  if ((num > 59)); then
+    ((sec = num % 60))
+    ((num = num / 60))
+    if ((num > 59)); then
+      ((min = num % 60))
+      ((num = num / 60))
+      if ((num > 23)); then
+        ((hour = num % 24))
+        ((day = num / 24))
       else
-      ((hour=num))
+        ((hour = num))
       fi
     else
-    ((min=num))
+      ((min = num))
     fi
   else
-    ((sec=num))
+    ((sec = num))
   fi
   echo "${day}d ${hour}h ${min}m ${sec}s"
 }
@@ -31,10 +31,11 @@ __log() {
 }
 
 __notify() {
-  [ -n "$GOTIFY" ] && curl "$GOTIFY" \
-    --silent \
-    --output /dev/null \
-    --form "title=${1}" \
-    --form "message=[$(date +"%Y-%m-%d-%H-%M-%S")] ${2}"
-  return 0
+  if [ -n "$GOTIFY" ]; then
+    curl "$GOTIFY" \
+      --form "title=${1}" \
+      --form "message=[$(date +"%Y-%m-%d-%H-%M-%S")] ${2}"
+  else
+    __log "GOTIFY not configured, skipping notify"
+  fi
 }
