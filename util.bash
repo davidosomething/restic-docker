@@ -31,11 +31,12 @@ __log() {
 }
 
 __notify() {
-  if [ -n "$GOTIFY" ]; then
-    curl "$GOTIFY" \
-      --form "title=${1}" \
-      --form "message=[$(date +"%Y-%m-%d-%H-%M-%S")] ${2}"
-  else
+  if [ -z "$GOTIFY" ]; then
     __log "GOTIFY not configured, skipping notify"
+    return
   fi
+  curl "$GOTIFY" \
+    --form "title=${1}" \
+    --form "message=[$(date +"%Y-%m-%d-%H-%M-%S")] ${2}" ||
+    __log "Failed to reach gotify server"
 }
