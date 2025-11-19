@@ -26,6 +26,11 @@ I'll be maintaining this version for my own use.
 - [OPTIONAL] `GOTIFY` - URL with token, e.g.
   `http://mygotify/message?token=abc123`. Will POST to this URL with a message
   on successful backups.
+- [OPTIONAL] `WEBHOOK_SUCCESS` - Webhook URL endpoint for backup notifications.
+  When configured along with `WEBHOOK_TOKEN`, a POST request will be sent after
+  each backup operation with URL parameters: `?success={true|false}&error={error_message}&duration={duration}`.
+- [OPTIONAL] `WEBHOOK_TOKEN` - Bearer token for webhook authentication. Used in
+  the `Authorization: Bearer <token>` header when calling `WEBHOOK_SUCCESS`.
 
 #### Backblaze B2 Setup
 

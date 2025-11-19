@@ -40,3 +40,32 @@ __notify() {
     --form "message=[$(date +"%Y-%m-%d-%H-%M-%S")] ${2}" ||
     __log "Failed to reach gotify server"
 }
+
+__webhook_notify() {
+  local success="$1"
+  local error="$2"
+  local duration="$3"
+
+  if [ -z "$WEBHOOK_SUCCESS" ]; then
+    __log "WEBHOOK_SUCCESS not configured, skipping webhook"
+    return
+  fi
+
+  if [ -z "$WEBHOOK_TOKEN" ]; then
+    __log "WEBHOOK_TOKEN not configured, skipping webhook"
+    return
+  fi
+
+  local url="${WEBHOOK_SUCCESS}?success=${success}&error=${error}&duration=${duration}"
+  __log "[INFO] Sending webhook notification to ${WEBHOOK_SUCCESS}"
+
+  if curl -X POST "$url" \
+    -H "Authorization: Bearer ${WEBHOOK_TOKEN}" \
+    --fail \
+    --silent \
+    --show-error; then
+    __log "[INFO] Webhook notification sent successfully"
+  else
+    __log "[ERROR] Failed to send webhook notification"
+  fi
+}

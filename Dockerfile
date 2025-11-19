@@ -8,6 +8,8 @@ LABEL org.opencontainers.image.title="restic-docker" \
 ENV TZ=America/New_York
 ENV BACKUP_CRON="0 1 * * *"
 ENV RESTIC_TAG=latest
+ENV WEBHOOK_TOKEN=""
+ENV WEBHOOK_SUCCESS=""
 
 # We're just using pre-built restic now
 RUN apk add --no-cache bash ca-certificates curl restic tzdata
