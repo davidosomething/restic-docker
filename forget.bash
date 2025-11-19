@@ -2,7 +2,7 @@
 
 set -e
 
-source ./util.bash
+source "$(dirname "$0")/util.bash"
 
 __log "[INFO] Starting forget"
 __log "[INFO] RESTIC_FORGET_ARGS: ${RESTIC_FORGET_ARGS}"
@@ -20,6 +20,10 @@ if [ -n "${RESTIC_FORGET_ARGS}" ]; then
   else
     __log "[ERROR] Forget failed after ${elapsed}"
     __notify "forget failed" "failed after ${elapsed}"
-    restic unlock
+    # Only unlock if the repository appears to be locked
+    if restic list locks &>/dev/null && [ "$(restic list locks 2>/dev/null | wc -l)" -gt 0 ]; then
+      __log "[INFO] Attempting to unlock repository"
+      restic unlock
+    fi
   fi
 fi
