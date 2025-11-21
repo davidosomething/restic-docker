@@ -44,7 +44,6 @@ __notify() {
 __webhook_notify() {
   local success="$1"
   local error="$2"
-  local duration="$3"
 
   if [ -z "$WEBHOOK_SUCCESS" ]; then
     __log "WEBHOOK_SUCCESS not configured, skipping webhook"
@@ -56,8 +55,8 @@ __webhook_notify() {
     return
   fi
 
-  local url="${WEBHOOK_SUCCESS}?success=${success}&error=${error}&duration=${duration}"
-  __log "[INFO] Sending webhook notification to ${WEBHOOK_SUCCESS}"
+  local url="${WEBHOOK_SUCCESS}?success=${success}&error=${error}"
+  printf "%s\n" "$url"
 
   if curl -X POST "$url" \
     -H "Authorization: Bearer ${WEBHOOK_TOKEN}" \

@@ -19,11 +19,11 @@ elapsed="$(__humantime "$((end-start))")"
 if [[ $rc == 0 ]]; then
   __log "[INFO] Backup succeeded after ${elapsed}"
   __notify "backup complete" "succeeded after ${elapsed}"
-  __webhook_notify "true" "" "${elapsed}"
+  __webhook_notify "true" ""
 else
   __log "[ERROR] Backup failed after ${elapsed}"
   __notify "backup failed" "failed after ${elapsed}"
-  __webhook_notify "false" "backup failed" "${elapsed}"
+  __webhook_notify "false" "backup failed"
   # Only unlock if the repository appears to be locked
   if restic list locks &>/dev/null && [ "$(restic list locks 2>/dev/null | wc -l)" -gt 0 ]; then
     __log "[INFO] Attempting to unlock repository"
